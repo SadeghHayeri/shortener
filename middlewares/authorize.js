@@ -1,5 +1,5 @@
 const expressJwt = require('express-jwt');
-const jwt = require('../config/jwt');
+const {jwt} = require('../config/secrets');
 const HttpStatus = require('http-status-codes');
 const codeStrings = require('../config/codeStrings');
 

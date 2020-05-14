@@ -9,6 +9,7 @@
   "author": "Sadegh Hayeri",
   "license": "MIT",
   "dependencies": {
+    "bcrypt": "^4.0.1",
     "body-parser": "^1.19.0",
     "cookie-parser": "^1.4.5",
     "dotenv": "^8.2.0",
@@ -16,6 +17,7 @@
     "express-jwt": "^5.3.3",
     "express-validator": "^6.4.1",
     "http-status-codes": "^1.4.0",
+    "mongoose": "^5.9.14",
     "winston": "^3.2.1"
   }
 }
