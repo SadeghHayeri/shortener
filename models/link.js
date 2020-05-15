@@ -3,7 +3,7 @@ const Schema = mongoose.Schema;
 
 const LinkSchema = new Schema({
     owner: {
-        type: {type: Schema.Types.ObjectId, ref: 'user'},
+        type: String,
         required: true,
     },
     path: {
@@ -16,10 +16,16 @@ const LinkSchema = new Schema({
         required: true,
     },
 }, {
-    timestamps: { createdAt: 'created_at', updatedAt: 'updated_at' }
+    timestamps: { createdAt: 'created_at', updatedAt: 'updated_at' },
+    toObject: ({
+        transform: function (doc, ret) {
+            ret.id = ret._id;
+            delete ret._id;
+            delete ret.__v;
+            return ret;
+        }
+    })
 });
-
-LinkSchema.index({ owner: 1, url: 1 }, { unique: true });
 
 const Link = mongoose.model('link', LinkSchema);
 module.exports = Link;

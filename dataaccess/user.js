@@ -1,10 +1,22 @@
 const User = require('../models/user');
+const codeStrings = require('../config/codeStrings');
 
 class UserDataAccess {
-    static async newUser(email, username, password) {
-        const newUser = new User({email, username, password});
-        await newUser.save();
-        return newUser;
+    static async newUser(role, email, username, password) {
+        try {
+            const newUser = new User({role, email, username, password});
+            await newUser.save();
+            return newUser;
+        } catch (error) {
+            if (error.code === 11000 && error.keyValue.username) {
+                throw new Error(codeStrings.USERNAME_ALREADY_EXIST);
+            }
+
+            if (error.code === 11000 && error.keyValue.email) {
+                throw new Error(codeStrings.EMAIL_ADDRESS_ALREADY_EXIST);
+            }
+            throw error;
+        }
     }
 
     static async getAll() {
@@ -12,7 +24,7 @@ class UserDataAccess {
     }
 
     static async getById(id) {
-        return User.findOne({id});
+        return User.findOne({_id: id});
     }
 
     static async getByUsername(username) {

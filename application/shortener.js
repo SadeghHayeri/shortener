@@ -6,10 +6,11 @@ class ShortenerApp {
     static async generateShortLink(owner, url, preferredPath) {
         const path = preferredPath || Random.generateUniqueId();
         try {
-            return LinkDataAccess.newLink(owner, url, path);
+            const link = await LinkDataAccess.newLink(owner, url, path);
+            return link;
         } catch (error) {
             if (error.message === codeStrings.DUPLICATE_PATH_ERROR) {
-                const newPath = path + Random.generateRandomString(1);
+                const newPath = path + '-' + Random.generateRandomString(1);
                 return ShortenerApp.generateShortLink(owner, url, newPath);
             }
             throw error;

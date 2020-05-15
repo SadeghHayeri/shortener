@@ -6,7 +6,7 @@ class Random {
     }
 
     static generateRandomString(len) { // TODO: fix for long length
-        return Math.random().toString(36).substring(len);
+        return Math.random().toString(36).substring(2, 2 + len);
     }
 }
 

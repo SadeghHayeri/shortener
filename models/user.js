@@ -25,7 +25,15 @@ const UserSchema = new Schema({
         required: true,
     },
 }, {
-    timestamps: { createdAt: 'created_at', updatedAt: 'updated_at' }
+    timestamps: { createdAt: 'created_at', updatedAt: 'updated_at' },
+    toObject: ({
+        transform: function (doc, ret) {
+            ret.id = ret._id;
+            delete ret._id;
+            delete ret.__v;
+            return ret;
+        }
+    })
 });
 
 UserSchema.pre('save', async function() {

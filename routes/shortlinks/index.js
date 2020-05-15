@@ -7,16 +7,29 @@ const {ROLES} = require('../../config/enums');
 const codeStrings = require('../../config/codeStrings');
 const { param, check, validationResult } = require('express-validator');
 const config = require('../../config/config');
+const ObjectId = require('bson').ObjectID;
 
 const router = express.Router();
 
 router.post('/', [
     authorize(),
     check('url').isURL(),
-], async (req, res) => {
-    const {url, preferredPath} = req.body;
-    const link = await shortenerApp.generateShortLink(req.user.id, url, preferredPath);
-    res.status(HttpStatus.OK).json({link: `${config.baseUrl}/r/${link.path}`});
+], async (req, res, next) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(HttpStatus.UNPROCESSABLE_ENTITY).json({
+            codeString: codeStrings.INVALID_REQUEST,
+            errors: errors.array()
+        });
+    }
+
+    try {
+        const {url, preferredPath} = req.body;
+        const link = await shortenerApp.generateShortLink(req.user.id, url, preferredPath);
+        res.status(HttpStatus.OK).json({link: `${config.baseUrl}/r/${link.path}`});
+    } catch (error) {
+        next(error);
+    }
 });
 
 router.get('/', authorize(), async (req, res) => {
@@ -26,7 +39,7 @@ router.get('/', authorize(), async (req, res) => {
 
 router.get('/:id/stats', [
     authorize(),
-    param('id').customSanitizer(value => ObjectId(value)),
+    param('id').customSanitizer(value => new ObjectId(value)),
 ], async (req, res) => {
     const stats = await analyticsApp.getLinkStats(req.params.id);
     res.status(HttpStatus.OK).json({stats});
