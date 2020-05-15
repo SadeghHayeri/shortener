@@ -4,7 +4,7 @@ const Random = require('../utils/random');
 
 class ShortenerApp {
     static async generateShortLink(owner, url, preferredPath) {
-        const path = preferredPath || Random.generateUniqueId();
+        const path = preferredPath || Random.generateUniqueId().replace('/', '');
         try {
             const link = await LinkDataAccess.newLink(owner, url, path);
             return link;
