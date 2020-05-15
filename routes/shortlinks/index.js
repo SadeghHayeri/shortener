@@ -11,6 +11,13 @@ const ObjectId = require('bson').ObjectID;
 
 const router = express.Router();
 
+function _toNormalUrl(url) {
+    if (url.substring(0, 4) !== 'http') {
+        url = 'http://' + url;
+    }
+    return url;
+}
+
 router.post('/', [
     authorize(),
     check('url').isURL(),
@@ -22,6 +29,8 @@ router.post('/', [
             errors: errors.array()
         });
     }
+
+    req.body.url = _toNormalUrl(req.body.url);
 
     try {
         const {url, preferredPath} = req.body;
