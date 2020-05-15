@@ -1,5 +1,5 @@
 const config = {
-    baseUrl: process.env.BASE_URL || 'https://localhost:3000',
+    baseUrl: process.env.BASE_URL || 'localhost:4000',
     linkCacheTTL: 3600,
 };
 
