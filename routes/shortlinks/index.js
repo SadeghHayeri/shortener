@@ -5,9 +5,11 @@ const HttpStatus = require('http-status-codes');
 const authorize = require('../../middlewares/authorize');
 const {ROLES} = require('../../config/enums');
 const codeStrings = require('../../config/codeStrings');
-const { param, check, validationResult } = require('express-validator');
+const { param, check, validationResult, query } = require('express-validator');
 const config = require('../../config/config');
 const ObjectId = require('bson').ObjectID;
+const {STATS_DURATION} = require('../../config/enums');
+const collections = require('../../utils/collections');
 
 const router = express.Router();
 
@@ -49,8 +51,20 @@ router.get('/', authorize(), async (req, res) => {
 router.get('/:id/stats', [
     authorize(),
     param('id').customSanitizer(value => new ObjectId(value)),
+    query('statsDuration').isIn(Object.values(STATS_DURATION)),
 ], async (req, res) => {
-    const stats = await analyticsApp.getLinkStats(req.params.id);
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(HttpStatus.UNPROCESSABLE_ENTITY).json({
+            codeString: codeStrings.INVALID_REQUEST,
+            errors: errors.array()
+        });
+    }
+
+    const {statsDuration} = req.query;
+    const stats = await analyticsApp.getLinkStats(req.params.id, statsDuration);
+    stats.byDevice = collections.mapToObject(stats.byDevice);
+    stats.byBrowser = collections.mapToObject(stats.byBrowser);
     res.status(HttpStatus.OK).json({stats});
 });
 

@@ -35,13 +35,17 @@ class DailyStatsDataAccess {
     }
 
     static async getOnlineStats(linkId, date) {
-        const [[,deviceStats], [,browserStats]] = await redis.pipeline()
+        const [[,byDevice], [,byBrowser]] = await redis.pipeline()
             .hgetall(DailyStatsDataAccess._getDevicesRedisKey(linkId, date))
             .hgetall(DailyStatsDataAccess._getBrowserRedisKey(linkId, date))
             .exec();
+
+        Object.keys(byDevice).forEach(device => byDevice[device] = parseInt(byDevice[device]));
+        Object.keys(byBrowser).forEach(browser => byBrowser[browser] = parseInt(byBrowser[browser]));
+
         return {
-            deviceStats: collections.objectToMap(deviceStats),
-            browserStats: collections.objectToMap(browserStats),
+            byDevice: collections.objectToMap(byDevice),
+            byBrowser: collections.objectToMap(byBrowser),
         };
     }
 

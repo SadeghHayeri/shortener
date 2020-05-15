@@ -31,10 +31,7 @@ class AnalyticsApp {
 
             logger.info(`store ${linkIds.length} linkIds`);
             await Promise.map(linkIds, async linkId => {
-                const {
-                    deviceStats: byDevice,
-                    browserStats: byBrowser,
-                } = await dailyStatsDataAccess.getOnlineStats(linkId, yesterday);
+                const {byDevice, byBrowser} = await dailyStatsDataAccess.getOnlineStats(linkId, yesterday);
                 await dailyStatsDataAccess.removeFromVisitedLinkSet(yesterday, linkId);
                 await dailyStatsDataAccess.addOfflineStats(linkId, yesterday, {byDevice, byBrowser});
             });
@@ -43,7 +40,7 @@ class AnalyticsApp {
     }
 
     static _calculateAllViews(mapStats) {
-        let all;
+        let all = 0;
         mapStats.forEach(value => {
             all += value;
         })
@@ -56,11 +53,11 @@ class AnalyticsApp {
 
         offlineStats.forEach(offlineStat => {
             const {byBrowser, byDevice} = offlineStat.stats;
-            byBrowser.keys.forEach(key => {
-                byBrowserAll.set(key, (byBrowserAll.get(key) || 0) + byBrowser.get(key));
+            byBrowser.forEach((value, key) => {
+                byBrowserAll.set(key, (byBrowserAll.get(key) || 0) + value);
             })
-            byDevice.keys().forEach(key => {
-                byDeviceAll.set(key, (byDeviceAll.get(key) || 0) + byDevice.get(key));
+            byDevice.forEach((value, key) => {
+                byDeviceAll.set(key, (byDeviceAll.get(key) || 0) + value);
             })
         });
 
@@ -94,7 +91,7 @@ class AnalyticsApp {
 
     static async _getTodayStats(linkId) {
         const today = AnalyticsApp._toDateString(new Date());
-        const {byBrowser, byDevice} = dailyStatsDataAccess.getOnlineStats(linkId, today);
+        const {byBrowser, byDevice} = await dailyStatsDataAccess.getOnlineStats(linkId, today);
         return {
             all: AnalyticsApp._calculateAllViews(byBrowser),
             byBrowser,
