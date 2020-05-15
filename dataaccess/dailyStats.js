@@ -1,7 +1,12 @@
 const OfflineStats = require('../models/offlineStats');
 const {master: redis} = require('../utils/redis');
+const collections = require('../utils/collections');
 
 class DailyStatsDataAccess {
+    static _getVisitedSetRedisKey(date) {
+        return `stats:${date}:visited-set`;
+    }
+
     static _getDevicesRedisKey(linkId, date) {
         return `stats:${date}:linkId:${linkId}:devices`;
     }
@@ -10,20 +15,34 @@ class DailyStatsDataAccess {
         return `stats:${date}:linkId:${linkId}:browser`;
     }
 
-    static async addView(linkId, device, browser) {
+    static async addView(linkId, date, device, browser) {
         await redis.pipeline()
-            .hincby(DailyStatsDataAccess._getDevicesRedisKey(linkId), device)
-            .hincby(DailyStatsDataAccess._getBrowserRedisKey(linkId), browser)
+            .hincrby(DailyStatsDataAccess._getDevicesRedisKey(linkId, date), device, 1)
+            .hincrby(DailyStatsDataAccess._getBrowserRedisKey(linkId, date), browser, 1)
             .exec();
     }
 
+    static async addToVisitedSet(linkId, date) {
+        await redis.sadd(DailyStatsDataAccess._getVisitedSetRedisKey(date), linkId);
+    }
+
+    static async getVisitedLinks(date, limit) {
+        return redis.srandmember(DailyStatsDataAccess._getVisitedSetRedisKey(date), limit);
+    }
+
+    static async removeFromVisitedLinkSet(date, linkId) {
+        await redis.srem(DailyStatsDataAccess._getVisitedSetRedisKey(date), linkId);
+    }
+
     static async getOnlineStats(linkId, date) {
-        const [deviceStats, browserStats] = await redis.pipeline()
+        const [[,deviceStats], [,browserStats]] = await redis.pipeline()
             .hgetall(DailyStatsDataAccess._getDevicesRedisKey(linkId, date))
             .hgetall(DailyStatsDataAccess._getBrowserRedisKey(linkId, date))
             .exec();
-
-        return {deviceStats, browserStats};
+        return {
+            deviceStats: collections.objectToMap(deviceStats),
+            browserStats: collections.objectToMap(browserStats),
+        };
     }
 
     static async deleteOnlineStats(linkId, date) {

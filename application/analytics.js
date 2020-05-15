@@ -2,21 +2,50 @@ const codeStrings = require('../config/codeStrings');
 const dailyStatsDataAccess = require('../dataaccess/dailyStats');
 const {STATS_DURATION} = require('../config/enums');
 const TIME = require('../utils/time');
+const Promise = require('bluebird');
+const config = require('../config/config');
+const logger = require('../utils/logger');
 
 class AnalyticsApp {
-    static async _getDate(date) {
-        date = date || new Date();
-        return new Date().toLocaleDateString().split('/').join('-');
+    static _toDateString(date) {
+        return date.toLocaleDateString().split('/').join('-');
     }
 
     static async addView(linkId, device, browser) {
-        await dailyStatsDataAccess.addView(linkId, device, browser);
+        const today = AnalyticsApp._toDateString(new Date());
+        await Promise.all([
+            dailyStatsDataAccess.addView(linkId, today, device, browser),
+            dailyStatsDataAccess.addToVisitedSet(linkId, today),
+        ]);
+    }
+
+    static async storeOnlineStats() {
+        const yesterday = AnalyticsApp._toDateString(new Date(Date.now() - 12 * TIME.HOUR));
+        logger.info('start store stats scheduler');
+        while (true) {
+            const linkIds = await dailyStatsDataAccess.getVisitedLinks(yesterday, config.analyticsStoreBatchSize);
+            if (!linkIds.length) {
+                logger.info('no new linkIds, end!');
+                break;
+            }
+
+            logger.info(`store ${linkIds.length} linkIds`);
+            await Promise.map(linkIds, async linkId => {
+                const {
+                    deviceStats: byDevice,
+                    browserStats: byBrowser,
+                } = await dailyStatsDataAccess.getOnlineStats(linkId, yesterday);
+                await dailyStatsDataAccess.removeFromVisitedLinkSet(yesterday, linkId);
+                await dailyStatsDataAccess.addOfflineStats(linkId, yesterday, {byDevice, byBrowser});
+            });
+            logger.info('store finished');
+        }
     }
 
     static _calculateAllViews(mapStats) {
         let all;
-        mapStats.keys().forEach(key => {
-            all += mapStats.get(key);
+        mapStats.forEach(value => {
+            all += value;
         })
         return all;
     }
@@ -64,7 +93,7 @@ class AnalyticsApp {
     }
 
     static async _getTodayStats(linkId) {
-        const today = AnalyticsApp._getDate();
+        const today = AnalyticsApp._toDateString(new Date());
         const {byBrowser, byDevice} = dailyStatsDataAccess.getOnlineStats(linkId, today);
         return {
             all: AnalyticsApp._calculateAllViews(byBrowser),

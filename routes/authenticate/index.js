@@ -5,7 +5,7 @@ const { check, validationResult } = require('express-validator');
 
 const router = express.Router();
 
-router.post('/', async (req, res, next) => {
+router.post('/store', async (req, res, next) => {
     try {
         const {username, email, password} = req.body;
         const {user, token} = await userApp.authenticate(username, email, password);
