@@ -6,7 +6,7 @@ class UserDataAccess {
         try {
             const newUser = new User({role, email, username, password});
             await newUser.save();
-            return newUser;
+            return newUser.toObject();
         } catch (error) {
             if (error.code === 11000 && error.keyValue.username) {
                 throw new Error(codeStrings.USERNAME_ALREADY_EXIST);

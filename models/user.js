@@ -9,11 +9,13 @@ const UserSchema = new Schema({
         type: String,
         required: true,
         unique: true,
+        index: true,
     },
     email: {
         type: String,
         required: true,
         unique: true,
+        index: true,
     },
     password: {
         type: String,
@@ -25,7 +27,7 @@ const UserSchema = new Schema({
         required: true,
     },
 }, {
-    timestamps: { createdAt: 'created_at', updatedAt: 'updated_at' },
+    timestamps: { createdAt: 'createdAt', updatedAt: 'updatedAt' },
     toObject: ({
         transform: function (doc, ret) {
             ret.id = ret._id;

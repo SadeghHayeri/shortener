@@ -5,18 +5,20 @@ const LinkSchema = new Schema({
     owner: {
         type: String,
         required: true,
+        index: true,
     },
     path: {
         type: String,
         required: true,
         unique: true,
+        index: true,
     },
     url: {
         type: String,
         required: true,
     },
 }, {
-    timestamps: { createdAt: 'created_at', updatedAt: 'updated_at' },
+    timestamps: { createdAt: 'createdAt', updatedAt: 'updatedAt' },
     toObject: ({
         transform: function (doc, ret) {
             ret.id = ret._id;

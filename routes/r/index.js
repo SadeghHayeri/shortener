@@ -17,8 +17,8 @@ router.get('/:path', param('path').isAlpha().isLength({min: 10, max:10}), async 
         const browserAgent = browser(req.headers['user-agent']);
         analyticsApp.addView(
             link.id,
+            browserAgent.mobile ? 'MOBILE' : 'DESKTOP',
             browserAgent.name || 'UNKNOWN',
-            browserAgent.mobile ? 'MOBILE' : 'DESKTOP'
         );
 
         res.redirect(link.url);
