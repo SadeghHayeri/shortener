@@ -1,11 +1,12 @@
 const express = require('express');
-const router = express.Router();
 const userApp = require('../../application/user');
 const HttpStatus = require('http-status-codes');
 const authorize = require('../../middlewares/authorize');
 const {ROLES} = require('../../config/enums');
 const codeStrings = require('../../config/codeStrings');
 const { check, validationResult } = require('express-validator');
+
+const router = express.Router();
 
 router.get('/', authorize(ROLES.ADMIN), async (req, res) => {
     const users = await userApp.getUsers();

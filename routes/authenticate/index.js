@@ -1,8 +1,9 @@
 const express = require('express');
-const router = express.Router();
 const userApp = require('../../application/user');
 const HttpStatus = require('http-status-codes');
 const { check, validationResult } = require('express-validator');
+
+const router = express.Router();
 
 router.post('/', async (req, res) => {
     const {username, email, password} = req.body;
