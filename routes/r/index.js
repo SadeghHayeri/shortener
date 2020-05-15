@@ -14,7 +14,7 @@ router.get('/:path', param('path').isAlpha().isLength({min: 10, max:10}), async 
     const link = await shortenerApp.getByPath(req.params.path);
     const browserAgent = browser(req.headers['user-agent']);
     analyticsApp.addView(link.id, browserAgent.name, browserAgent.mobile ? 'MOBILE' : 'DESKTOP');
-    res.redirect(link.longUrl);
+    res.redirect(link.url);
 });
 
 module.exports = router;

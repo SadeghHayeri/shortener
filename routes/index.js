@@ -6,9 +6,9 @@ const usersRouter = require('./users');
 const shortLinksRouter = require('./shortlinks');
 const redirectRouter = require('./r');
 
-router.use('/authenticate', authenticateRouter);
-router.use('/users', usersRouter);
-router.use('/shortlinks', shortLinksRouter);
+router.use('/v1/authenticate', authenticateRouter);
+router.use('/v1/users', usersRouter);
+router.use('/v1/shortlinks', shortLinksRouter);
 router.use('/r', redirectRouter);
 
 module.exports = router;

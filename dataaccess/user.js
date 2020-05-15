@@ -1,10 +1,6 @@
 const User = require('../models/user');
 
 class UserDataAccess {
-    static async getById(id) {
-        return User.findOne({id});
-    }
-
     static async newUser(email, username, password) {
         const newUser = new User({email, username, password});
         await newUser.save();
@@ -13,6 +9,10 @@ class UserDataAccess {
 
     static async getAll() {
         return User.find({});
+    }
+
+    static async getById(id) {
+        return User.findOne({id});
     }
 
     static async getByUsername(username) {

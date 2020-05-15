@@ -1,12 +1,31 @@
-const UserDataAccess = require('../dataaccess/user');
+const LinkDataAccess = require('../dataaccess/link');
 const codeStrings = require('../config/codeStrings');
-const {jwt} = require('../config/secrets');
+const Random = require('../utils/random');
 
 class ShortenerApp {
-    static async generateShortLink(userId, url, preferredPath) {
+    static async generateShortLink(owner, url, preferredPath) {
+        const path = preferredPath || Random.generateUniqueId();
+        try {
+            return LinkDataAccess.newLink(owner, url, path);
+        } catch (error) {
+            if (error.message === codeStrings.DUPLICATE_PATH_ERROR) {
+                const newPath = path + Random.generateRandomString(1);
+                return ShortenerApp.generateShortLink(owner, url, newPath);
+            }
+            throw error;
+        }
     }
 
-    static async getAllUserLinks(userId) {
+    static async getAllUserLinks(owner) {
+        return LinkDataAccess.getLinksByOwner(owner);
+    }
+
+    static async getLinkByPath(path) {
+        const link = LinkDataAccess.getLinkByPath(path);
+        if (!link) {
+            throw new Error(codeStrings.LINK_NOT_FOUND);
+        }
+        return link;
     }
 }
 

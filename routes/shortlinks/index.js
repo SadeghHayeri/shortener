@@ -15,8 +15,8 @@ router.post('/', [
     check('url').isURL(),
 ], async (req, res) => {
     const {url, preferredPath} = req.body;
-    const path = await shortenerApp.generateShortLink(req.user.id, url, preferredPath);
-    res.status(HttpStatus.OK).json({link: `${config.baseUrl}/r/${path}`});
+    const link = await shortenerApp.generateShortLink(req.user.id, url, preferredPath);
+    res.status(HttpStatus.OK).json({link: `${config.baseUrl}/r/${link.path}`});
 });
 
 router.get('/', authorize(), async (req, res) => {
