@@ -3,7 +3,6 @@ const shortenerApp = require('../../application/shortener');
 const analyticsApp = require('../../application/analytics');
 const HttpStatus = require('http-status-codes');
 const authorize = require('../../middlewares/authorize');
-const {ROLES} = require('../../config/enums');
 const codeStrings = require('../../config/codeStrings');
 const { param, check, validationResult, query } = require('express-validator');
 const config = require('../../config/config');

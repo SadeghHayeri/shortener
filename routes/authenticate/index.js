@@ -1,7 +1,6 @@
 const express = require('express');
 const userApp = require('../../application/user');
 const HttpStatus = require('http-status-codes');
-const { check, validationResult } = require('express-validator');
 
 const router = express.Router();
 

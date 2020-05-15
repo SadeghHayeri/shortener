@@ -5,7 +5,6 @@ const authorize = require('../../middlewares/authorize');
 const {ROLES} = require('../../config/enums');
 const codeStrings = require('../../config/codeStrings');
 const { check, validationResult } = require('express-validator');
-const logger = require('../../utils/logger');
 
 const router = express.Router();
 

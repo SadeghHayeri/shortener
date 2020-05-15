@@ -1,4 +1,3 @@
-const codeStrings = require('../config/codeStrings');
 const dailyStatsDataAccess = require('../dataaccess/dailyStats');
 const {STATS_DURATION} = require('../config/enums');
 const TIME = require('../utils/time');
