@@ -28,11 +28,10 @@ build-shortener:
     - docker build --pull -t $CONTAINER_IMAGE .
     - docker push $CONTAINER_IMAGE
 
-test-shoraner:
-  stage: test
+deploy-k8-shortener:
+  stage: k8-deploy
   tags:
-    - docker
-  only:
-    - production
+    - k8-deployer
   script:
-    - echo 'deploy!'
+    - echo $KUBE_CONFIG > ~/.kube/config
+    - kubectl set image deployment/shortener shortener=$CONTAINER_IMAGE --record

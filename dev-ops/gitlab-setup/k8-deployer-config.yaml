@@ -16,11 +16,11 @@ runners:
   tags: "docker"
 
   builds:
-    cpuRequests: 200m
-    memoryRequests: 256Mi
+    cpuRequests: 50m
+    memoryRequests: 50Mi
   services:
-    cpuRequests: 200m
-    memoryRequests: 256Mi
+    cpuRequests: 50m
+    memoryRequests: 50Mi
   helpers:
-    cpuRequests: 200m
-    memoryRequests: 256Mi
+    cpuRequests: 50m
+    memoryRequests: 50Mi
