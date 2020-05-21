@@ -12,7 +12,7 @@ stages:
 variables:
   PROJECT: shortaner
   CI_REGISTRY: registry.gitlab.com
-  CONTAINER_IMAGE: $CI_REGISTRY/sadeghhayeri/shortaner:$CI_COMMIT_REF_SLUG
+  CONTAINER_IMAGE: $CI_REGISTRY/sadeghhayeri/shortaner/app:$CI_COMMIT_REF_SLUG
   DOCKER_DRIVER: overlay2
   DOCKER_TLS_CERTDIR: ""
 
