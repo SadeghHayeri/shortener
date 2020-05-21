@@ -7,7 +7,7 @@ stages:
 variables:
   PROJECT: shortaner
   CI_REGISTRY: registry.gitlab.com
-  CI_REGISTRY_IMAGE: $CI_REGISTRY/$CI_PROJECT_NAME
+  CI_REGISTRY_IMAGE: $CI_REGISTRY/$PROJECT
   CONTAINER_IMAGE: $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG
 
 before_script:
@@ -18,8 +18,9 @@ build-shortaner:
   tags:
     - docker
   script:
+    - echo $CONTAINER_IMAGE
     - docker build --pull -t $CONTAINER_IMAGE .
-    - docker push CONTAINER_IMAGE
+    - docker push $CONTAINER_IMAGE
 
 test-shoraner:
   stage: test
