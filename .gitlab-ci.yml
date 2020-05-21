@@ -1,3 +1,5 @@
+image: docker:latest
+
 stages:
   - build
   - test
@@ -23,6 +25,8 @@ build-shortaner:
 
 test-shoraner:
   stage: test
+  tags:
+    - docker
   only:
     - production
   script:
