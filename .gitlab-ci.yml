@@ -30,8 +30,12 @@ build-shortener:
 deploy-k8-shortener:
   stage: k8-deploy
   tags:
-    - k8-deployer
+    - docker
   script:
+    - k8sversion=v1.11.5
+    - curl -LO https://storage.googleapis.com/kubernetes-release/release/$k8sversion/bin/linux/amd64/kubectl
+    - chmod +x ./kubectl
+    - sudo mv ./kubectl /usr/local/bin/kubectl
     - mkdir -p ~/.kube
     - echo $KUBE_CONFIG > ~/.kube/config
     - kubectl set image deployment/shortener shortener=$CONTAINER_IMAGE --record
