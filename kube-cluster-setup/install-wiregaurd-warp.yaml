@@ -1,0 +1,23 @@
+- hosts: all
+  become: yes
+  tasks:
+  - name: add WireGuard repository
+    apt_repository:
+      repo: "ppa:wireguard/wireguard"
+      state: present
+      update_cache: yes
+
+  - name: install support packages needed for Wireguard
+    package:
+      name: "{{ packages }}"
+      state: present
+    vars:
+      packages:
+      - software-properties-common
+      - linux-headers-{{ ansible_kernel }}
+
+  - name: install WireGaurd
+    apt:
+      name: wiregaurd
+      state: present
+      update_cache: true

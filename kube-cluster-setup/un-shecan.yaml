@@ -1,0 +1,8 @@
+- hosts: all
+  become: yes
+  gather_facts: no
+  tasks:
+  - name: configure name servers
+    shell: |
+      echo 'nameserver 1.1.1.1' > /etc/resolv.conf
+      echo 'nameserver 8.8.8.8' >> /etc/resolv.conf
