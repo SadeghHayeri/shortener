@@ -1,10 +1,6 @@
-services:
-  - docker:dind
-  - registry.gitlab.com/sadeghhayeri/shortener/deployer
-
 stages:
-  - k8-deploy
   - build
+  - k8-deploy
   - test
   - k8s-deploy-canary
 
