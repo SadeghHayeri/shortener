@@ -10,16 +10,16 @@ stages:
   - k8-deploy
 
 variables:
-  PROJECT: shortaner
+  PROJECT: shortener
   CI_REGISTRY: registry.gitlab.com
-  CONTAINER_IMAGE: $CI_REGISTRY/sadeghhayeri/shortaner/app:$CI_COMMIT_REF_SLUG
+  CONTAINER_IMAGE: $CI_REGISTRY/sadeghhayeri/shortener/app:$CI_COMMIT_REF_SLUG
   DOCKER_DRIVER: overlay2
   DOCKER_TLS_CERTDIR: ""
 
 before_script:
   - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
 
-build-shortaner:
+build-shortener:
   stage: build
   tags:
     - docker
