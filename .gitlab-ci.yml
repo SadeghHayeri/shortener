@@ -6,7 +6,7 @@ stages:
 
 variables:
   PROJECT: shortaner
-  CI_REGISTRY: dregistry.gitlab.com
+  CI_REGISTRY: registry.gitlab.com
   CI_REGISTRY_IMAGE: $CI_REGISTRY/$CI_PROJECT_NAME
   CONTAINER_IMAGE: $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG
 
