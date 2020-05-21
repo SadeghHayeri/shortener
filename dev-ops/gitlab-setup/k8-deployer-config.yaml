@@ -1,6 +1,6 @@
 gitlabUrl: https://gitlab.com/
 runnerRegistrationToken: "aynmLfcKEkXs3ncbHyeZ"
-concurrent: 5
+concurrent: 1
 checkInterval: 10
 
 rbac:
@@ -11,7 +11,7 @@ metrics:
   enabled: true
 
 runners:
-  image: roffe/kubectl
+  image: registry.gitlab.com/sadeghhayeri/shortener/deployer
   privileged: true
   tags: "k8-deployer"
 
