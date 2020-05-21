@@ -1,6 +1,6 @@
 gitlabUrl: https://gitlab.com/
 runnerRegistrationToken: "aynmLfcKEkXs3ncbHyeZ"
-concurrent: 10
+concurrent: 5
 checkInterval: 10
 
 rbac:
@@ -11,9 +11,9 @@ metrics:
   enabled: true
 
 runners:
-  image: docker:19.03.8
+  image: roffe/kubectl
   privileged: true
-  tags: "docker"
+  tags: "k8-deployer"
 
   builds:
     cpuRequests: 50m
