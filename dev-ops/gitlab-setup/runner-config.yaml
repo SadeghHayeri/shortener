@@ -1,0 +1,19 @@
+gitlabUrl: https://gitlab.com/
+runnerRegistrationToken: "aynmLfcKEkXs3ncbHyeZ"
+concurrent: 10
+checkInterval: 10
+
+runners:
+  image: docker:19.03.8
+  privileged: true
+  tags: "docker"
+
+  builds:
+    cpuRequests: 200m
+    memoryRequests: 256Mi
+  services:
+    cpuRequests: 200m
+    memoryRequests: 256Mi
+  helpers:
+    cpuRequests: 200m
+    memoryRequests: 256Mi
