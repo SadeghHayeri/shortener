@@ -3,6 +3,13 @@ runnerRegistrationToken: "aynmLfcKEkXs3ncbHyeZ"
 concurrent: 10
 checkInterval: 10
 
+rbac:
+  create: true
+  clusterWideAccess: true
+
+metrics:
+  enabled: true
+
 runners:
   image: docker:19.03.8
   privileged: true
