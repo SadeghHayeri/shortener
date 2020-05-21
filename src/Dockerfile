@@ -1,4 +1,4 @@
-FROM node:10
+FROM registry.gitlab.com/sadeghhayeri/shortener/node-base:14-alpine
 
 WORKDIR /usr/src/app
 
