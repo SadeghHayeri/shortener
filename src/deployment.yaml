@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: shortener
+  labels:
+    app: shortener
+spec:
+  selector:
+    matchLabels:
+      app: shortener
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: shortener
+    spec:
+      containers:
+        - name: shortener
+          image: registry.gitlab.com/sadeghhayeri/shortener/app:master
+          envFrom:
+            - configMapRef:
+                name: shortener-configs
+          ports:
+            - containerPort: 8000

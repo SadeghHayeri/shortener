@@ -1,6 +1,6 @@
 gitlabUrl: https://gitlab.com/
 runnerRegistrationToken: "aynmLfcKEkXs3ncbHyeZ"
-concurrent: 1
+concurrent: 3
 checkInterval: 10
 
 rbac:
