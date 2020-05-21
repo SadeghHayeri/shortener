@@ -24,7 +24,6 @@ build-shortaner:
   tags:
     - docker
   script:
-    - ls
     - cd src
     - docker build --pull -t $CONTAINER_IMAGE .
     - docker push $CONTAINER_IMAGE
