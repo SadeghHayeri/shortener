@@ -18,6 +18,7 @@ build-shortaner:
   tags:
     - docker
   script:
+    - echo $CONTAINER_IMAGE
     - docker build --pull -t $CONTAINER_IMAGE .
     - docker push $CONTAINER_IMAGE
 
