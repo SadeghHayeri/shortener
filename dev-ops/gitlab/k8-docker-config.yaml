@@ -13,7 +13,7 @@ metrics:
 runners:
   image: docker:19.03.8
   privileged: true
-  tags: "docker"
+  tags: docker
 
   builds:
     cpuRequests: 50m

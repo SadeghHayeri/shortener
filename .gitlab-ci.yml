@@ -2,7 +2,7 @@ image: docker:latest
 
 services:
   - docker:dind
-  - registry.gitlab.com/sadeghhayeri/shortener/deployer
+  - roffe/kubectl
 
 stages:
   - build
@@ -31,7 +31,7 @@ build-shortener:
 deploy-k8-shortener:
   stage: k8-deploy
   tags:
-    - k8-deployer
+    - kubectl
   script:
     - echo $KUBE_CONFIG > ~/.kube/config
     - kubectl set image deployment/shortener shortener=$CONTAINER_IMAGE --record

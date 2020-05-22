@@ -11,9 +11,9 @@ metrics:
   enabled: true
 
 runners:
-  image: registry.gitlab.com/sadeghhayeri/shortener/deployer
+  image: roffe/kubectl
   privileged: true
-  tags: "k8-deployer"
+  tags: kubectl
 
   builds:
     cpuRequests: 50m
