@@ -27,7 +27,7 @@ build:
     - docker push $CONTAINER_IMAGE
 
 unit-test:
-  stage: build
+  stage: test
   tags:
     - docker
   before_script:
