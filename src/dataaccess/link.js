@@ -14,7 +14,7 @@ class LinkDataAccess {
             await link.save();
             return link.toObject();
         } catch (error) {
-            if (error.code === 11000 && error.keyValue.path) {
+            if (error.code === 11000) {
                 throw new Error(codeStrings.DUPLICATE_PATH_ERROR);
             }
             throw error;
