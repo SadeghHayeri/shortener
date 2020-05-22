@@ -1,6 +1,12 @@
+image: docker:latest
+
+services:
+  - docker:dind
+  - registry.gitlab.com/sadeghhayeri/shortener/deployer
+
 stages:
-  - build
   - k8-deploy
+  - build
   - test
   - k8s-deploy-canary
 
@@ -8,6 +14,7 @@ variables:
   PROJECT: shortener
   CI_REGISTRY: registry.gitlab.com
   CONTAINER_IMAGE: $CI_REGISTRY/sadeghhayeri/shortener/app:$CI_COMMIT_REF_SLUG-$CI_PIPELINE_ID
+  DOCKER_DRIVER: overlay2
   DOCKER_TLS_CERTDIR: ""
   DOCKER_HOST: tcp://localhost:2375
 
