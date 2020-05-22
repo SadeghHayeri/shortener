@@ -5,10 +5,10 @@ services:
   - registry.gitlab.com/sadeghhayeri/shortener/deployer
 
 stages:
-  - k8-deploy
   - build
   - test
   - k8s-deploy-canary
+  - k8-deploy
 
 variables:
   PROJECT: shortener
@@ -16,7 +16,6 @@ variables:
   CONTAINER_IMAGE: $CI_REGISTRY/sadeghhayeri/shortener/app:$CI_COMMIT_REF_SLUG-$CI_PIPELINE_ID
   DOCKER_DRIVER: overlay2
   DOCKER_TLS_CERTDIR: ""
-  DOCKER_HOST: tcp://localhost:2375
 
 build-shortener:
   stage: build
@@ -34,8 +33,5 @@ deploy-k8-shortener:
   tags:
     - k8-deployer
   script:
-    - which kubectl
-    - kubectl version
-#    - mkdir -p ~/.kube
-#    - echo $KUBE_CONFIG > ~/.kube/config
-#    - kubectl set image deployment/shortener shortener=$CONTAINER_IMAGE --record
+    - echo $KUBE_CONFIG > ~/.kube/config
+    - kubectl set image deployment/shortener shortener=$CONTAINER_IMAGE --record
