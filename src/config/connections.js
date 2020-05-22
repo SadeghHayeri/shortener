@@ -15,6 +15,8 @@ const config = {
         host: process.env.MONGO_HOST || 'localhost',
         port: Number(process.env.MONGO_PORT) || 27017,
         dbName: process.env.MONGO_DB_NAME || 'shortener',
+        user: process.env.MONGO_USER || 'admin',
+        password: process.env.MONGO_PASSWORD || 'password',
     },
 };
 

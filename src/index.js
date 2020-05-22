@@ -1,15 +1,15 @@
 const mongoose = require('mongoose');
-const connectionsConfig = require('./config/connections');
+const {mongo: mongoConfig, app: appConfig} = require('./config/connections');
 const logger = require('./utils/logger');
 const app = require('./app');
 const http = require('http');
 
 async function connectToMongo() {
     mongoose.connect(
-        `mongodb://${connectionsConfig.mongo.host}:${connectionsConfig.mongo.port}/${connectionsConfig.mongo.dbName}`,
+        `mongodb://${mongoConfig.user}:${mongoConfig.password}@${mongoConfig.host}:${mongoConfig.port}/${mongoConfig.dbName}`,
         {useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true}
     );
-    logger.info(`connect to mongo (${connectionsConfig.mongo.host}:${connectionsConfig.mongo.port})`);
+    logger.info(`connect to mongo (${mongoConfig.user}:${mongoConfig.password}:${mongoConfig.host}:${mongoConfig.port})`);
 }
 
 async function startHttpServer() {
@@ -42,11 +42,11 @@ async function startHttpServer() {
         logger.info('Listening on ' + bind);
     }
 
-    app.set('port', connectionsConfig.app.port);
+    app.set('port', appConfig.port);
 
     const server = http.createServer(app);
 
-    server.listen(connectionsConfig.app.port);
+    server.listen(appConfig.port);
     server.on('error', onError);
     server.on('listening', onListening);
 }
