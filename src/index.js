@@ -17,9 +17,7 @@ async function startHttpServer() {
         if (error.syscall !== 'listen') {
             throw error;
         }
-        const bind = typeof port === 'string'
-            ? 'Pipe ' + port
-            : 'Port ' + port;
+        const bind = 'Port ' + appConfig.port;
         switch (error.code) {
             case 'EACCES':
                 logger.error(bind + ' requires elevated privileges');

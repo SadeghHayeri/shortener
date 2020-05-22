@@ -7,7 +7,7 @@ const jwt = require('jsonwebtoken');
 class UserApp {
     static async newUser(email, username, password) {
         const user = await UserDataAccess.newUser(ROLES.USER, email, username, password);
-        return user.toObject();
+        return user;
     }
 
     static async getUser(id) {

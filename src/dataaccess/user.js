@@ -8,12 +8,8 @@ class UserDataAccess {
             await newUser.save();
             return newUser.toObject();
         } catch (error) {
-            if (error.code === 11000 && error.keyValue.username) {
-                throw new Error(codeStrings.USERNAME_ALREADY_EXIST);
-            }
-
-            if (error.code === 11000 && error.keyValue.email) {
-                throw new Error(codeStrings.EMAIL_ADDRESS_ALREADY_EXIST);
+            if (error.code === 11000) {
+                throw new Error(codeStrings.USERNAME_OR_EMAIL_ALREADY_EXIST);
             }
             throw error;
         }

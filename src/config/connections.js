@@ -5,7 +5,7 @@ dotenv.config();
 const config = {
     app: {
         host: process.env.HOST || 'localhost',
-        port: Number(process.env.PORT) || 3000,
+        port: Number(process.env.PORT) || 8000,
     },
     redis: {
         host: process.env.REDIS_HOST || 'localhost',
