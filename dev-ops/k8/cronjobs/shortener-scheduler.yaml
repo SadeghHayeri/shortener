@@ -1,0 +1,21 @@
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: shortener-scheduler
+spec:
+  schedule: "59 23 * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+            - name: curl
+              image: curlimages/curl
+              command: [
+                "curl",
+                "--request POST",
+                "--url http://yekta.gateway.server/scheduler/store",
+                "--header 'content-type: application/json'",
+                "--data '{\"jwt\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVlYzc5M2Y3ZmU5N2I4ZjgxY2I0YmRhMSIsInJvbGUiOiJBRE1JTiIsImlhdCI6MTU5MDE4NTExMX0.Ka1SArzi8uM_LTZTGpZmgxuEv0ReKlQc2Rcf9hbBoFc\"}'",
+              ]
+          restartPolicy: OnFailure
