@@ -31,7 +31,6 @@ deploy-k8-shortener:
   stage: k8-deploy
   tags:
     - kubectl
-  variables:
-    KUBECONFIG: /etc/deploy/config
   script:
+    - export KUBECONFIG=/etc/deploy/config
     - kubectl set image deployment/shortener shortener=$CONTAINER_IMAGE --record
