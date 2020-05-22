@@ -4,10 +4,9 @@ services:
   - docker:dind
 
 stages:
-  - k8-deploy
   - build
   - test
-  - k8s-deploy-canary
+  - k8-deploy
 
 variables:
   PROJECT: shortener
@@ -16,7 +15,7 @@ variables:
   DOCKER_DRIVER: overlay2
   DOCKER_TLS_CERTDIR: ""
 
-build-shortener:
+build:
   stage: build
   tags:
     - docker
@@ -27,7 +26,17 @@ build-shortener:
     - docker build --pull -t $CONTAINER_IMAGE .
     - docker push $CONTAINER_IMAGE
 
-deploy-k8-shortener:
+unit-test:
+  stage: build
+  tags:
+    - docker
+  before_script:
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+  script:
+    - cd src
+    - echo 'RUN TESTS!'
+
+deploy-k8:
   stage: k8-deploy
   tags:
     - kubectl
