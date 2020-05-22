@@ -4,10 +4,10 @@ services:
   - docker:dind
 
 stages:
+  - k8-deploy
   - build
   - test
   - k8s-deploy-canary
-  - k8-deploy
 
 variables:
   PROJECT: shortener
@@ -31,5 +31,8 @@ deploy-k8-shortener:
   stage: k8-deploy
   tags:
     - kubectl
+  variables:
+    - KUBECONFIG_PATH: /etc/deploy/config
   script:
+    - echo ${KUBE_CONFIG} | base64 -d > ${KUBECONFIG_PATH}
     - kubectl set image deployment/shortener shortener=$CONTAINER_IMAGE --record
