@@ -3,10 +3,11 @@ const {mongo: mongoConfig, app: appConfig} = require('./config/connections');
 const logger = require('./utils/logger');
 const app = require('./app');
 const http = require('http');
+const User = require('./models/user');
 
 async function connectToMongo() {
     mongoose.connect(
-        `mongodb://${mongoConfig.user}:${mongoConfig.password}@${mongoConfig.host}:${mongoConfig.port}/${mongoConfig.dbName}`,
+        `mongodb://${mongoConfig.host}:${mongoConfig.port}/${mongoConfig.dbName}`,
         {useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true}
     );
     logger.info(`connect to mongo (${mongoConfig.user}:${mongoConfig.password}:${mongoConfig.host}:${mongoConfig.port})`);
