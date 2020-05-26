@@ -4,6 +4,6 @@ metadata:
   name: mongo
 subsets:
   - addresses:
-      - ip: 37.152.177.53
+      - ip: 185.206.93.30
     ports:
       - port: 27017

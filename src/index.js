@@ -3,7 +3,6 @@ const {mongo: mongoConfig, app: appConfig} = require('./config/connections');
 const logger = require('./utils/logger');
 const app = require('./app');
 const http = require('http');
-const User = require('./models/user');
 
 async function connectToMongo() {
     mongoose.connect(
